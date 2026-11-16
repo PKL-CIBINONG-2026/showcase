@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark light" />
+  <title>PKL-CIBINONG-2026 / showcase</title>
+  <meta name="description" content="Showcase tugas peserta PKL Cibinong 2026 bergaya repository GitHub dengan preview live popover." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23141414'/%3E%3Crect x='2' y='2' width='28' height='28' fill='none' stroke='%2388c0d0' stroke-width='3'/%3E%3Cpath d='M9 11h14v3H9zm0 7h10v3H9z' fill='%2383d6c5'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <script>
+    try {
+      var savedTheme = localStorage.getItem('pkl-showcase-theme');
+      if (savedTheme === 'light' || savedTheme === 'dark') {
+        document.documentElement.dataset.theme = savedTheme;
+      }
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <!-- Compact Top Header with Dark / Light Theme Switcher -->
+    <header class="top-header">
+      <div class="top-header-left">
+        <span class="header-repo-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/>
+          </svg>
+        </span>
+        <span class="header-title">
+          <span id="repo-owner">PKL-CIBINONG-2026</span>
+          <span class="header-slash" aria-hidden="true">/</span>
+          <strong id="repo-name">showcase</strong>
+        </span>
+      </div>
+
+      <div class="theme-switch" role="group" aria-label="Pengaturan tema">
+        <button type="button" class="theme-btn" data-theme-value="dark" aria-pressed="true">
+          DARK
+        </button>
+        <button type="button" class="theme-btn" data-theme-value="light" aria-pressed="false">
+          LIGHT
+        </button>
+      </div>
+    </header>
+
+    <!-- 2-Column GitHub-Style Participant Grid -->
+    <main id="repo-tree" class="repo-tree" aria-label="Daftar Tugas Peserta PKL" aria-live="polite">
+      <div class="status-banner">MEMUAT DATA REPOSITORY...</div>
+    </main>
+
+    <!-- Compact Brutalist Footer -->
+    <footer class="site-footer">
+      <div class="footer-left">
+        <span class="footer-tag" id="footer-owner">PKL-CIBINONG-2026</span>
+        <span class="footer-note">Hover item tugas untuk preview · Klik VIEW ↗ untuk buka penuh</span>
+      </div>
+      <div class="footer-right">
+        <a
+          id="footer-repo-link"
+          class="footer-link"
+          href="https://github.com/PKL-CIBINONG-2026/showcase"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          SOURCE REPO ↗
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Backdrop for mobile/pinned drawer mode -->
+  <div id="popover-backdrop" class="popover-backdrop" hidden></div>
+
+  <!-- Singleton Brutalist Hover Preview Popover -->
+  <aside
+    id="preview-popover"
+    class="preview-popover"
+    role="dialog"
+    aria-modal="false"
+    aria-hidden="true"
+    aria-labelledby="popover-title"
+    hidden
+  >
+    <div class="popover-titlebar">
+      <div class="popover-title-meta">
+        <span id="popover-cat" class="cat-badge">CATEGORY</span>
+        <strong id="popover-title" class="popover-title">task-name</strong>
+      </div>
+      <div class="popover-title-actions">
+        <button id="popover-mode-btn" class="brutal-mini-btn" type="button" hidden>
+          IMG MODE
+        </button>
+        <button id="popover-close" class="brutal-mini-btn brutal-mini-btn--close" type="button" aria-label="Tutup preview">
+          ×
+        </button>
+      </div>
+    </div>
+
+    <div class="popover-addressbar">
+      <span class="status-dot" id="popover-status-dot" aria-hidden="true"></span>
+      <span id="popover-url-display" class="popover-url">https://...</span>
+      <span id="popover-status-text" class="popover-status-text">LIVE</span>
+    </div>
+
+    <div id="popover-stage" class="popover-stage">
+      <div id="popover-loading" class="popover-loading">
+        <span class="loading-spinner" aria-hidden="true"></span>
+        <span>CONNECTING GITHUB PAGES...</span>
+      </div>
+      <iframe
+        id="popover-iframe"
+        class="popover-iframe"
+        title="Preview halaman tugas PKL"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+        referrerpolicy="no-referrer"
+      ></iframe>
+      <img
+        id="popover-thumb"
+        class="popover-thumb"
+        alt="Screenshot preview halaman tugas"
+        hidden
+      />
+    </div>
+
+    <div class="popover-footer">
+      <span id="popover-hint" class="popover-hint">Preview 1280×800 · Klik View Full Page jika diblokir host</span>
+      <div class="popover-cta-group">
+        <a
+          id="popover-repo-btn"
+          class="brutal-btn brutal-btn--secondary brutal-btn--sm"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          hidden
+        >
+          REPO ↗
+        </a>
+        <a
+          id="popover-full-btn"
+          class="brutal-btn brutal-btn--primary brutal-btn--sm"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          VIEW FULL PAGE ↗
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <script src="./data/showcase.js" defer></script>
+  <script src="./app.js" defer></script>
+</body>
+</html>
