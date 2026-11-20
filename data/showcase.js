@@ -33,6 +33,15 @@ window.SHOWCASE_DATA = {
           "repoUrl": "https://github.com/PKL-CIBINONG-2026/tugas-1-transcriber-muhammad-hubbi",
           "thumbnail": "",
           "updatedAt": "2026-11-16"
+        },
+        {
+          "title": "tugas-2-JsStudyCase-Muhammad-Hubbi",
+          "description": "Studi kasus JavaScript murni (tanpa live preview).",
+          "category": "javascript",
+          "pagesUrl": "",
+          "repoUrl": "https://github.com/PKL-CIBINONG-2026/tugas-2-JsStudyCase-Muhammad-Hubbi",
+          "thumbnail": "",
+          "updatedAt": "2026-11-20"
         }
       ]
     },
@@ -53,6 +62,15 @@ window.SHOWCASE_DATA = {
           "repoUrl": "https://github.com/PKL-CIBINONG-2026/Tugas2_Transcriber-YuanLatisa",
           "thumbnail": "",
           "updatedAt": "2026-11-16"
+        },
+        {
+          "title": "Tugas3_jsStudiKasus-YuanLatisa",
+          "description": "Studi kasus JavaScript murni (tanpa live preview).",
+          "category": "javascript",
+          "pagesUrl": "",
+          "repoUrl": "https://github.com/PKL-CIBINONG-2026/Tugas3_jsStudiKasus-YuanLatisa",
+          "thumbnail": "",
+          "updatedAt": "2026-11-20"
         }
       ]
     }

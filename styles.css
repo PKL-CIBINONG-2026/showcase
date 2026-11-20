@@ -1,19 +1,19 @@
 :root,
 [data-theme="dark"] {
   /* Cursor Dark (Zed Theme) Palette Tokens */
-  --bg-canvas: #1a1a1a;
-  --bg-surface: #141414;
-  --bg-elevated: #1e1e1e;
-  --bg-inset: #141414;
-  --bg-hover: #292929;
+  --bg-canvas: #121417;
+  --bg-surface: #181b20;
+  --bg-elevated: #20242b;
+  --bg-inset: #0f1114;
+  --bg-hover: #2a2f38;
   --bg-active: #404040;
-  --ink-primary: #d8dee9;
+  --ink-primary: #e6eaf0;
   --ink-bright: #ffffff;
-  --ink-secondary: rgba(204, 204, 204, 0.72);
-  --ink-muted: #6d6d6d;
+  --ink-secondary: #b4bcc8;
+  --ink-muted: #8b94a3;
   --ink-on-accent: #141414;
-  --border-strong: #494949;
-  --border-subtle: #2a2a2a;
+  --border-strong: #4a515c;
+  --border-subtle: #2c313a;
   --accent-neon: #88c0d0;
   --accent-mint: #83d6c5;
   --accent-yellow: #ebcb8b;
@@ -29,22 +29,22 @@
 
 [data-theme="light"] {
   /* Soft Matte Warm Paper Brutalism (Low-Glare) */
-  --bg-canvas: #e6e2d8;
-  --bg-surface: #efece3;
+  --bg-canvas: #f4f1ea;
+  --bg-surface: #fbfaf6;
   --bg-elevated: #ded9cc;
   --bg-inset: #e4e0d5;
   --bg-hover: #d5d0c3;
   --bg-active: #c8c2b3;
   --ink-primary: #22252a;
   --ink-bright: #16181c;
-  --ink-secondary: #484c56;
-  --ink-muted: #686c75;
+  --ink-secondary: #3d414a;
+  --ink-muted: #5a5e67;
   --ink-on-accent: #f7f5ef;
   --border-strong: #2a2d34;
   --border-subtle: #c5c0b2;
   --accent-neon: #1d63b8;
   --accent-mint: #217357;
-  --accent-yellow: #d4a64a;
+  --accent-yellow: #9a6b00;
   --accent-cyan: #1d63b8;
   --accent-danger: #b83232;
   --shadow-color: #2a2d34;
@@ -1070,4 +1070,9 @@ a {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Repo-only tasks (pure JavaScript, no live preview) */
+.task-row.is-repo-only .task-open-btn {
+  border-style: dashed;
 }

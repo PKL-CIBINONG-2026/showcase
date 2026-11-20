@@ -179,7 +179,8 @@
             orderedKeys.push(cat.key);
           }
           const pagesUrl = sanitizeUrl(t && t.pagesUrl);
-          if (!pagesUrl) return null;
+          const repoUrl = sanitizeUrl(t && t.repoUrl);
+          if (!pagesUrl && !repoUrl) return null;
           return {
             id: `${id}-${tIdx}`,
             title: t && t.title ? String(t.title) : `tugas-${tIdx + 1}`,
@@ -187,7 +188,9 @@
             categoryKey: cat.key,
             category: cat,
             pagesUrl,
-            repoUrl: sanitizeUrl(t && t.repoUrl),
+            repoUrl,
+            repoOnly: !pagesUrl,
+            viewerUrl: !pagesUrl ? buildViewerUrl(repoUrl) : '',
             thumbnail: sanitizeUrl(t && t.thumbnail),
             updatedAt: t && t.updatedAt ? String(t.updatedAt) : '',
             studentId: id,
@@ -286,6 +289,11 @@
     });
   }
 
+  function buildViewerUrl(repoUrl) {
+    const m = /^https:\/\/github\.com\/PKL-CIBINONG-2026\/([A-Za-z0-9._-]+)\/?$/.exec(repoUrl || '');
+    return m ? `./viewer.html?repo=${encodeURIComponent(m[1])}` : '';
+  }
+
   function buildTaskRow(task) {
     const li = createEl('li', 'task-row');
     li.style.setProperty('--cat-color', task.category.color);
@@ -297,7 +305,7 @@
     const titleWrap = createEl('div', 'task-title-wrap');
     const titleLine = createEl('div', 'task-title-line');
     const titleLink = createEl('a', 'task-title-link', task.title);
-    titleLink.href = task.pagesUrl;
+    titleLink.href = task.pagesUrl || task.viewerUrl || task.repoUrl;
     titleLink.target = '_blank';
     titleLink.rel = 'noopener noreferrer';
     titleLine.appendChild(titleLink);
@@ -314,8 +322,9 @@
     }
     mainCol.appendChild(titleWrap);
 
-    const openLink = createEl('a', 'task-open-btn', 'VIEW ↗');
-    openLink.href = task.pagesUrl;
+    const openLink = createEl('a', 'task-open-btn', task.repoOnly ? 'FILES ↗' : 'VIEW ↗');
+    openLink.href = task.pagesUrl || task.viewerUrl || task.repoUrl;
+    if (task.repoOnly) li.classList.add('is-repo-only');
     openLink.target = '_blank';
     openLink.rel = 'noopener noreferrer';
 
@@ -323,6 +332,7 @@
     li.appendChild(openLink);
 
     li.addEventListener('mouseenter', () => {
+      if (task.repoOnly) return;
       if (window.innerWidth < DESKTOP_BREAKPOINT) return;
       if (state.isPinned) return;
       if (state.activeTask && state.activeTask.id === task.id && !dom.popover.hidden) {
@@ -462,12 +472,7 @@
     const activeCatKey = state.activeCategories.get(student.id) || null;
     body.appendChild(renderFolderNav(body, student, groupedCategories, activeCatKey));
 
-    const orderedGroups = activeCatKey
-      ? [
-          ...groupedCategories.filter((g) => g.category.key === activeCatKey),
-          ...groupedCategories.filter((g) => g.category.key !== activeCatKey),
-        ]
-      : groupedCategories;
+    const orderedGroups = groupedCategories;
 
     const folderList = createEl('div', 'folder-list');
     folderList.setAttribute('role', 'group');
@@ -764,6 +769,7 @@
   }
 
   function openPreview(task, rowEl, { pin = false } = {}) {
+    if (task.repoOnly) return;
     clearCloseTimer();
     clearHoverTimer();
 

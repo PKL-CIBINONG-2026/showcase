@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark light" />
+  <title>File Viewer · PKL-CIBINONG-2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <script>
+    try {
+      var savedTheme = localStorage.getItem('pkl-showcase-theme');
+      if (savedTheme === 'light' || savedTheme === 'dark') document.documentElement.dataset.theme = savedTheme;
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="./styles.css" />
+  <link id="hl-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+  <link id="hl-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" disabled />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    html, body.viewer { height: 100%; }
+    body.viewer { margin: 0; background: var(--bg-canvas); color: var(--ink-primary); font-family: var(--font-mono); font-size: 13px; display: flex; flex-direction: column; overflow: hidden; }
+    .vw-header { flex: none; display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 2px solid var(--border-strong); background: var(--bg-surface); min-width: 0; }
+    .vw-title { font-weight: 800; color: var(--ink-bright); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+    .vw-title span { color: var(--ink-secondary); font-weight: 500; }
+    .vw-btn { flex: none; color: var(--ink-primary); text-decoration: none; border: 2px solid var(--border-strong); padding: 4px 10px; background: var(--bg-elevated); font: inherit; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .vw-btn:hover { background: var(--bg-hover); color: var(--ink-bright); }
+    .vw-body { flex: 1; min-height: 0; display: grid; grid-template-columns: 280px minmax(0, 1fr); }
+    .vw-tree { min-height: 0; overflow: auto; border-right: 2px solid var(--border-strong); background: var(--bg-surface); padding: 8px 0; }
+    .vw-tree button { display: block; width: 100%; text-align: left; background: none; border: 0; color: var(--ink-secondary); font: inherit; padding: 6px 16px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .vw-tree button:hover { background: var(--bg-hover); color: var(--ink-bright); }
+    .vw-tree button.is-active { background: var(--bg-active); color: var(--ink-bright); font-weight: 700; box-shadow: inset 3px 0 0 var(--accent-neon); }
+    .vw-tree .dir { color: var(--ink-muted); padding: 10px 16px 2px; font-weight: 700; }
+    .vw-main { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+    .vw-pathbar { flex: none; display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-bottom: 1px solid var(--border-subtle); background: var(--bg-elevated); min-width: 0; }
+    .vw-path { color: var(--ink-secondary); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+    .vw-files-toggle { display: none; }
+    #vw-content { flex: 1; min-height: 0; overflow: auto; background: var(--bg-inset); }
+    .vw-code { margin: 0; min-height: 100%; }
+    .vw-code code.hljs { display: block; background: transparent; padding: 16px; font-family: var(--font-mono); font-size: 13px; line-height: 1.6; overflow: visible; }
+    #vw-content.vw-msg { padding: 24px 16px; color: var(--ink-secondary); line-height: 1.6; }
+    .vw-msg a { color: var(--accent-neon); }
+    .vw-img { max-width: 100%; padding: 16px; box-sizing: border-box; }
+    @media (max-width: 760px) {
+      .vw-header { padding: 8px 12px; gap: 8px; }
+      .vw-btn { padding: 4px 8px; font-size: 12px; }
+      .vw-hide-sm, .vw-title span { display: none; }
+      .vw-body { grid-template-columns: 1fr; position: relative; }
+      .vw-pathbar { padding: 8px 12px; }
+      .vw-files-toggle { display: inline-block; }
+      .vw-tree { display: none; position: absolute; inset: 0 0 auto 0; max-height: 60%; z-index: 5; border-right: 0; border-bottom: 2px solid var(--border-strong); box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+      .vw-tree.is-open { display: block; }
+      .vw-tree button { padding: 10px 16px; }
+      .vw-code code.hljs { font-size: 12px; padding: 12px; }
+    }
+  </style>
+</head>
+<body class="viewer">
+  <header class="vw-header">
+    <a class="vw-btn" href="./index.html">←<span class="vw-hide-sm"> Showcase</span></a>
+    <div class="vw-title" id="vw-title">Memuat…</div>
+    <button class="vw-btn" id="vw-theme" type="button">Tema</button>
+    <a class="vw-btn" id="vw-gh" href="#" target="_blank" rel="noopener noreferrer">GitHub<span class="vw-hide-sm"> ↗</span></a>
+  </header>
+  <div class="vw-body">
+    <nav class="vw-tree" id="vw-tree" aria-label="Daftar file"></nav>
+    <main class="vw-main">
+      <div class="vw-pathbar">
+        <button class="vw-btn vw-files-toggle" id="vw-files-toggle" type="button" aria-controls="vw-tree" aria-expanded="false">☰ File</button>
+        <div class="vw-path" id="vw-path">—</div>
+      </div>
+      <div id="vw-content" class="vw-msg">Memuat daftar file…</div>
+    </main>
+  </div>
+  <script>
+  (function () {
+    'use strict';
+    var OWNER = 'PKL-CIBINONG-2026';
+    var NAME_RE = /^[A-Za-z0-9._-]{1,100}$/;
+    var params = new URLSearchParams(location.search);
+    var repo = params.get('repo') || '';
+    var $ = function (id) { return document.getElementById(id); };
+    var repoUrl = 'https://github.com/' + OWNER + '/' + encodeURIComponent(repo);
+
+    function applyHlTheme() {
+      var light = document.documentElement.dataset.theme === 'light';
+      $('hl-dark').disabled = light;
+      $('hl-light').disabled = !light;
+    }
+    applyHlTheme();
+    function setTreeOpen(open) {
+      $('vw-tree').style.top = document.querySelector('.vw-pathbar').offsetHeight + 'px';
+      $('vw-tree').classList.toggle('is-open', open);
+      $('vw-files-toggle').setAttribute('aria-expanded', String(open));
+    }
+    $('vw-files-toggle').addEventListener('click', function () {
+      setTreeOpen(!$('vw-tree').classList.contains('is-open'));
+    });
+    $('vw-theme').addEventListener('click', function () {
+      var next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+      document.documentElement.dataset.theme = next;
+      try { localStorage.setItem('pkl-showcase-theme', next); } catch (e) {}
+      applyHlTheme();
+    });
+
+    function msg(html) {
+      var el = $('vw-content');
+      el.className = 'vw-msg';
+      el.innerHTML = html;
+    }
+
+    if (!NAME_RE.test(repo)) {
+      $('vw-title').textContent = 'Repo tidak valid';
+      msg('Parameter <code>repo</code> tidak ditemukan atau tidak valid.');
+      return;
+    }
+
+    $('vw-title').innerHTML = '';
+    $('vw-title').append(Object.assign(document.createElement('span'), { textContent: OWNER + ' / ' }), repo);
+    document.title = repo + ' · File Viewer';
+    $('vw-gh').href = repoUrl;
+
+    var api = 'https://api.github.com/repos/' + OWNER + '/' + repo;
+    var branch = 'main';
+    var IMG = /\.(png|jpe?g|gif|svg|webp|ico)$/i;
+    var BIN = /\.(woff2?|ttf|otf|eot|zip|pdf|mp4|mp3|wav)$/i;
+    var LANG = { js: 'javascript', mjs: 'javascript', ts: 'typescript', html: 'xml', htm: 'xml', css: 'css', json: 'json', md: 'markdown', py: 'python', sh: 'bash', yml: 'yaml', yaml: 'yaml' };
+
+    function rawUrl(path) {
+      return 'https://raw.githubusercontent.com/' + OWNER + '/' + repo + '/' + encodeURIComponent(branch) + '/' + path.split('/').map(encodeURIComponent).join('/');
+    }
+
+    function openFile(path, btn) {
+      document.querySelectorAll('.vw-tree button.is-active').forEach(function (b) { b.classList.remove('is-active'); });
+      if (btn) btn.classList.add('is-active');
+      $('vw-path').textContent = path;
+      $('vw-path').title = path;
+      setTreeOpen(false);
+      $('vw-content').scrollTop = 0;
+      try { history.replaceState(null, '', '?repo=' + encodeURIComponent(repo) + '&file=' + encodeURIComponent(path)); } catch (e) {}
+
+      if (IMG.test(path)) {
+        var c = $('vw-content'); c.className = ''; c.innerHTML = '';
+        var img = document.createElement('img'); img.className = 'vw-img'; img.alt = path; img.src = rawUrl(path);
+        c.appendChild(img); return;
+      }
+      if (BIN.test(path)) { msg('File biner tidak bisa ditampilkan. Buka di GitHub.'); return; }
+
+      msg('Memuat file…');
+      fetch(rawUrl(path)).then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        return r.text();
+      }).then(function (text) {
+        var c = $('vw-content'); c.className = ''; c.innerHTML = '';
+        var pre = document.createElement('pre'); pre.className = 'vw-code';
+        var code = document.createElement('code');
+        var ext = (path.split('.').pop() || '').toLowerCase();
+        if (LANG[ext]) code.className = 'language-' + LANG[ext];
+        code.textContent = text;
+        pre.appendChild(code); c.appendChild(pre);
+        if (window.hljs) window.hljs.highlightElement(code);
+      }).catch(function () { msg('Gagal memuat file.'); });
+    }
+
+    fetch(api).then(function (r) {
+      if (r.status === 404) throw new Error('404');
+      if (r.status === 403) throw new Error('403');
+      if (!r.ok) throw new Error(String(r.status));
+      return r.json();
+    }).then(function (info) {
+      branch = info.default_branch || 'main';
+      return fetch(api + '/git/trees/' + encodeURIComponent(branch) + '?recursive=1');
+    }).then(function (r) {
+      if (!r.ok) throw new Error(String(r.status));
+      return r.json();
+    }).then(function (data) {
+      var files = (data.tree || []).filter(function (n) { return n.type === 'blob'; }).map(function (n) { return n.path; });
+      files.sort(function (a, b) {
+        var da = a.indexOf('/') !== -1, db = b.indexOf('/') !== -1;
+        if (da !== db) return da ? 1 : -1;
+        return a.localeCompare(b);
+      });
+      var tree = $('vw-tree');
+      if (!files.length) { msg('Repo ini masih kosong.'); return; }
+      var lastDir = null, buttons = {};
+      files.forEach(function (path) {
+        var i = path.lastIndexOf('/');
+        var dir = i === -1 ? '' : path.slice(0, i);
+        if (dir !== lastDir && dir) {
+          tree.appendChild(Object.assign(document.createElement('div'), { className: 'dir', textContent: dir + '/' }));
+        }
+        lastDir = dir;
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = i === -1 ? path : path.slice(i + 1);
+        b.title = path;
+        if (dir) b.style.paddingLeft = '28px';
+        b.addEventListener('click', function () { openFile(path, b); });
+        tree.appendChild(b);
+        buttons[path] = b;
+      });
+      var wanted = params.get('file');
+      var first = (wanted && buttons[wanted] && wanted) ||
+        files.find(function (f) { return /(^|\/)(index|main|script|app)\.js$/i.test(f); }) ||
+        files.find(function (f) { return /\.js$/i.test(f); }) ||
+        files.find(function (f) { return /readme\.md$/i.test(f); }) || files[0];
+      openFile(first, buttons[first]);
+    }).catch(function (err) {
+      var m = String(err && err.message);
+      var link = ' <a href="' + repoUrl + '" target="_blank" rel="noopener noreferrer">Buka di GitHub ↗</a>';
+      if (m === '404') msg('Repo tidak ditemukan atau bersifat <strong>private</strong>, jadi isi filenya tidak bisa ditampilkan di sini.' + link);
+      else if (m === '403') msg('Batas request GitHub API (60/jam) sudah habis. Coba lagi nanti.' + link);
+      else msg('Gagal memuat daftar file.' + link);
+    });
+  })();
+  </script>
+</body>
+</html>
