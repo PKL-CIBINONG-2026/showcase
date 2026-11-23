@@ -252,7 +252,7 @@
 
   function createCategoryBadge(categoryKey) {
     const isJs = /javascript|^js$/i.test(categoryKey);
-    const badge = createEl('span', `cat-badge ${isJs ? 'cat-badge--js' : 'cat-badge--code'}`);
+    const badge = createEl('span', `cat-icon ${isJs ? 'cat-icon--js' : 'cat-icon--code'}`);
     badge.setAttribute('aria-hidden', 'true');
     if (isJs) badge.textContent = 'JS';
     else badge.appendChild(createIconSvg('code', 12));
@@ -818,7 +818,9 @@
 
     dom.popover.style.setProperty('--cat-color', task.category.color);
     dom.popover.style.setProperty('--cat-ink', task.category.ink);
-    dom.popoverCat.textContent = task.category.label;
+    dom.popoverCat.textContent = '';
+    dom.popoverCat.appendChild(createCategoryBadge(task.category.key));
+    dom.popoverCat.appendChild(document.createTextNode(task.category.label));
     dom.popoverTitle.textContent = task.title;
     dom.popoverUrlDisplay.textContent = task.pagesUrl;
     dom.popoverFullBtn.href = task.pagesUrl;

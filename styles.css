@@ -1078,7 +1078,7 @@ a {
 }
 
 /* Category badges & task type icons */
-.cat-badge {
+.cat-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1095,7 +1095,7 @@ a {
   line-height: 1;
   box-shadow: 2px 2px 0 var(--shadow-color);
 }
-.cat-badge--js { align-items: flex-end; justify-content: flex-end; padding: 0 2px 1px 0; }
+.cat-icon--js { align-items: flex-end; justify-content: flex-end; padding: 0 2px 1px 0; }
 .task-type-icon {
   display: inline-flex;
   align-items: center;
@@ -1109,3 +1109,6 @@ a {
 }
 .task-type-icon.is-live { color: var(--accent-mint); }
 .task-type-icon.is-code { color: var(--accent-yellow); }
+#popover-cat { display: inline-flex; align-items: center; gap: 8px; }
+#popover-cat { gap: 6px; padding: 2px 6px 2px 2px; }
+#popover-cat .cat-icon { width: 18px; height: 18px; border-width: 1px; box-shadow: none; background: #12132b; color: var(--cat-color, var(--accent-neon)); font-size: 9px; }
