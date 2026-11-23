@@ -8,11 +8,11 @@ window.SHOWCASE_DATA = {
   "categories": {
     "html-css": {
       "label": "HTML & CSS",
-      "color": "#83D6C5"
+      "color": "#5EEAD4"
     },
     "javascript": {
       "label": "JavaScript",
-      "color": "#EBCB8B"
+      "color": "#FBBF5A"
     }
   },
   "students": [
@@ -35,13 +35,13 @@ window.SHOWCASE_DATA = {
           "updatedAt": "2026-11-16"
         },
         {
-          "title": "tugas-2-JsStudyCase-Muhammad-Hubbi",
-          "description": "Studi kasus JavaScript murni (tanpa live preview).",
+          "title": "tugas-3-JsDOM-muhammad-hubbi",
+          "description": "Latihan manipulasi DOM dengan JavaScript.",
           "category": "javascript",
-          "pagesUrl": "",
-          "repoUrl": "https://github.com/PKL-CIBINONG-2026/tugas-2-JsStudyCase-Muhammad-Hubbi",
+          "pagesUrl": "https://pkl-cibinong-2026.github.io/tugas-3-JsDOM-muhammad-hubbi/",
+          "repoUrl": "https://github.com/PKL-CIBINONG-2026/tugas-3-JsDOM-muhammad-hubbi",
           "thumbnail": "",
-          "updatedAt": "2026-11-20"
+          "updatedAt": "2026-11-23"
         }
       ]
     },
