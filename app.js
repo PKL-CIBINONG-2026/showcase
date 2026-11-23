@@ -230,6 +230,35 @@
     return el;
   }
 
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const ICON_PATHS = {
+    code: 'M4.72 3.22a.75.75 0 0 1 1.06 1.06L2.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06L.47 8.53a.75.75 0 0 1 0-1.06Zm6.56 0a.75.75 0 1 0-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06Z',
+    globe: 'M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM5.78 8.75a9.64 9.64 0 0 0 1.363 4.177c.255.426.542.832.857 1.215.245-.296.551-.705.857-1.215A9.64 9.64 0 0 0 10.22 8.75Zm4.44-1.5a9.64 9.64 0 0 0-1.363-4.177c-.307-.51-.612-.919-.857-1.215a9.927 9.927 0 0 0-.857 1.215A9.64 9.64 0 0 0 5.78 7.25Zm-5.944 1.5H1.543a6.507 6.507 0 0 0 4.666 5.5c-.123-.181-.24-.365-.352-.552-.715-1.192-1.437-2.874-1.581-4.948Zm-2.733-1.5h2.733c.144-2.074.866-3.756 1.58-4.948.12-.197.237-.381.353-.552a6.507 6.507 0 0 0-4.666 5.5Zm10.181 1.5c-.144 2.074-.866 3.756-1.58 4.948-.12.197-.237.381-.353.552a6.507 6.507 0 0 0 4.666-5.5Zm2.733-1.5a6.507 6.507 0 0 0-4.666-5.5c.123.181.24.365.353.552.714 1.192 1.436 2.874 1.58 4.948Z',
+  };
+
+  function createIconSvg(name, size, className) {
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('width', String(size));
+    svg.setAttribute('height', String(size));
+    svg.setAttribute('viewBox', '0 0 16 16');
+    svg.setAttribute('fill', 'currentColor');
+    svg.setAttribute('aria-hidden', 'true');
+    if (className) svg.classList.add(className);
+    const path = document.createElementNS(SVG_NS, 'path');
+    path.setAttribute('d', ICON_PATHS[name]);
+    svg.appendChild(path);
+    return svg;
+  }
+
+  function createCategoryBadge(categoryKey) {
+    const isJs = /javascript|^js$/i.test(categoryKey);
+    const badge = createEl('span', `cat-badge ${isJs ? 'cat-badge--js' : 'cat-badge--code'}`);
+    badge.setAttribute('aria-hidden', 'true');
+    if (isJs) badge.textContent = 'JS';
+    else badge.appendChild(createIconSvg('code', 12));
+    return badge;
+  }
+
   function createFileIconSvg() {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('width', '15');
@@ -300,7 +329,10 @@
     li.style.setProperty('--cat-ink', task.category.ink);
 
     const mainCol = createEl('div', 'task-main');
-    mainCol.appendChild(createFileIconSvg());
+    const typeIcon = createEl('span', `task-type-icon ${task.repoOnly ? 'is-code' : 'is-live'}`);
+    typeIcon.title = task.repoOnly ? 'Kode sumber' : 'Live preview';
+    typeIcon.appendChild(createIconSvg(task.repoOnly ? 'code' : 'globe', 14));
+    mainCol.appendChild(typeIcon);
 
     const titleWrap = createEl('div', 'task-title-wrap');
     const titleLine = createEl('div', 'task-title-line');
@@ -491,6 +523,7 @@
 
       const left = createEl('span', 'folder-row-left');
       left.appendChild(createFolderIconSvg(isActive));
+      left.appendChild(createCategoryBadge(category.key));
       left.appendChild(createEl('span', 'folder-name', `${category.label}/`));
       if (isActive) {
         left.appendChild(createEl('span', 'folder-active-tag', 'ACTIVE'));

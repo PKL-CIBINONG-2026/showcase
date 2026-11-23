@@ -1076,3 +1076,36 @@ a {
 .task-row.is-repo-only .task-open-btn {
   border-style: dashed;
 }
+
+/* Category badges & task type icons */
+.cat-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border-strong);
+  background: var(--cat-color, var(--accent-neon));
+  color: #12132b;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  box-shadow: 2px 2px 0 var(--shadow-color);
+}
+.cat-badge--js { align-items: flex-end; justify-content: flex-end; padding: 0 2px 1px 0; }
+.task-type-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--border-strong);
+  background: color-mix(in srgb, var(--cat-color, var(--accent-neon)) 22%, var(--bg-elevated));
+  color: var(--ink-bright);
+}
+.task-type-icon.is-live { color: var(--accent-mint); }
+.task-type-icon.is-code { color: var(--accent-yellow); }

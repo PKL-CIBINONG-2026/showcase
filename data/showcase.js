@@ -35,6 +35,15 @@ window.SHOWCASE_DATA = {
           "updatedAt": "2026-11-16"
         },
         {
+          "title": "tugas-2-JsStudyCase-Muhammad-Hubbi",
+          "description": "Studi kasus JavaScript murni (tanpa live preview).",
+          "category": "javascript",
+          "pagesUrl": "",
+          "repoUrl": "https://github.com/PKL-CIBINONG-2026/tugas-2-JsStudyCase-Muhammad-Hubbi",
+          "thumbnail": "",
+          "updatedAt": "2026-11-20"
+        },
+        {
           "title": "tugas-3-JsDOM-muhammad-hubbi",
           "description": "Latihan manipulasi DOM dengan JavaScript.",
           "category": "javascript",
